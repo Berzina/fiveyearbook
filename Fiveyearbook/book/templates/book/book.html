@@ -1,0 +1,18 @@
+{% extends "info/header.html"%}
+
+{% block content %}
+  {% for question in object_list %}
+    <div class="col-sm-6 col-md-4">
+      <div class="thumbnail">
+        <a href="/book/{{question_id}}" class="thumbnail">
+        {% load staticfiles %}
+        <img src="{% static '/img/question.jpg' %}" class="responsive-img" alt="img">
+        </a>
+        <div class="caption">
+          <h3>{{ question.title }}</h3>
+          <p>{{ question.date }}</p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}
