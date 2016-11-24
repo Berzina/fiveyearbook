@@ -1,16 +1,57 @@
 {% extends "info/header.html"%}
 
 {% block content %}
+  <nav aria-label="Page navigation">
+    <ul class="pagination">
+      <li>
+        <a href="#" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li><a href="#">1</a></li>
+      <li><a href="#">2</a></li>
+      <li><a href="#">3</a></li>
+      <li><a href="#">4</a></li>
+      <li><a href="#">5</a></li>
+      <li>
+        <a href="#" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
   {% for question in object_list %}
     <div class="col-sm-6 col-md-4">
       <div class="thumbnail">
-        <a href="/book/{{question_id}}" class="thumbnail">
+        <a href="/book/{{question.id}}" class="thumbnail">
         {% load staticfiles %}
         <img src="{% static '/img/question.jpg' %}" class="responsive-img" alt="img">
         </a>
         <div class="caption">
-          <h3>{{ question.title }}</h3>
-          <p>{{ question.date }}</p>
+          <div class = "row">
+            <div class="row-eq-height">
+              <div class="col-sm-5 col-md-5">
+                  <!-- <div class="row"> -->
+                  <div id = "date-header">
+                    <h4 class = "low-margin">
+                    {{ question.date|date:'F' }}
+                    </h4>
+                  </div>
+                  <!-- </div> -->
+                  <!-- <div class="row inner-border"> -->
+                  <div id = "date-body">
+                    <h2 class = "text-danger low-margin no-top-margin" align = "center">{{ question.date.day }}</h2>
+                  </div>
+                  <!-- </div> -->
+              </div>
+
+              <div class="col-sm-7 col-md-7">
+                <h3 class = "low-margin">{{ question.title }}</h3>
+              </div>
+              <p></p>
+            </div>
+            <!-- Hello world -->
+          </div>
         </div>
       </div>
     </div>
