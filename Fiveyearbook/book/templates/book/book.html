@@ -2,7 +2,7 @@
 
 {% block content %}
   <div class= "row">
-  {% for question in questions %}
+  {% for question in paged_object %}
 
     <div class="col-sm-6 col-md-4">
       <div class="thumbnail">
@@ -35,27 +35,7 @@
     </div>
   {% endfor %}
   </div>
-    <div class = "row">
-    <nav aria-label="Page navigation" class = "center">
-    <ul class="pagination">
-      <li>
-        {% if questions.has_previous %}
-          <a href="?page={{ questions.previous_page_number }}" aria-label="Previous">
-          <span aria-hidden="true">&laquo;</span>
-          </a>
-        {% endif %}
-      </li>
-      <li>        
-      <span class="current"> Page {{ questions.number }} of {{ questions.paginator.num_pages }}</span>
-      </li>
-      <li>
-        {% if questions.has_next %}
-            <a href="?page={{ questions.next_page_number }}" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
-            </a>
-        {% endif %}
-      </li>
-    </ul>
-  </nav>
+  <div class = "row">
+    {% include 'book/includes/listpagination.html' with paged_object=paged_object%}  
   </div>
 {% endblock %}

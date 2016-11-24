@@ -24,7 +24,7 @@ class DetailView(generic.DetailView):
 
     responses = paginator.page(page)
 
-    context['responses'] =  responses
+    context['paged_object'] =  responses
     return context 
 
 class ListView(generic.ListView):
@@ -42,7 +42,7 @@ class ListView(generic.ListView):
 
     questions = paginator.page(page)
 
-    context['questions'] =  questions
+    context['paged_object'] =  questions
     return context 
 
 def response(request, question_id):
