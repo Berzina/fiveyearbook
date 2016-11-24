@@ -23,7 +23,7 @@
   {% for question in object_list %}
     <div class="col-sm-6 col-md-4">
       <div class="thumbnail">
-        <a href="/book/{{question.id}}" class="thumbnail">
+        <a href="/book/{{question.id}}/?page=1" class="thumbnail">
         {% load staticfiles %}
         <img src="{% static '/img/question.jpg' %}" class="responsive-img" alt="img">
         </a>
@@ -31,18 +31,14 @@
           <div class = "row">
             <div class="row-eq-height">
               <div class="col-sm-5 col-md-5">
-                  <!-- <div class="row"> -->
-                  <div id = "date-header">
-                    <h4 class = "low-margin">
-                    {{ question.date|date:'F' }}
-                    </h4>
-                  </div>
-                  <!-- </div> -->
-                  <!-- <div class="row inner-border"> -->
-                  <div id = "date-body">
-                    <h2 class = "text-danger low-margin no-top-margin" align = "center">{{ question.date.day }}</h2>
-                  </div>
-                  <!-- </div> -->
+                <div id = "date-header">
+                  <h4 class = "low-margin">
+                  {{ question.date|date:'F' }}
+                  </h4>
+                </div>
+                <div id = "date-body">
+                  <h2 class = "text-danger low-margin no-top-margin" align = "center">{{ question.date.day }}</h2>
+                </div>
               </div>
 
               <div class="col-sm-7 col-md-7">
@@ -50,7 +46,6 @@
               </div>
               <p></p>
             </div>
-            <!-- Hello world -->
           </div>
         </div>
       </div>
