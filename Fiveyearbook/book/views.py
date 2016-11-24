@@ -27,6 +27,23 @@ class DetailView(generic.DetailView):
     context['responses'] =  responses
     return context 
 
+class ListView(generic.ListView):
+  model = Question
+  template_name = "book/book.html"
+
+  def get_context_data(self, **kwargs):
+
+    question_list = Question.objects.all()
+    paginator = Paginator(question_list, 3)
+
+    context = super(ListView, self).get_context_data(**kwargs)
+
+    page = self.request.GET.get('page',1)
+
+    questions = paginator.page(page)
+
+    context['questions'] =  questions
+    return context 
 
 def response(request, question_id):
   question = get_object_or_404(Question, pk=question_id)
