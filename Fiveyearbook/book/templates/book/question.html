@@ -16,7 +16,7 @@
               <div class="panel-body">
                   <h4>{{ question.title }}</h4>
                 </div>
-                <div class="panel-footer">Вы не ответили на вопрос в течении недели</div>
+                <div class="panel-footer">Вопрос закрыт, вы должны ответить на вопрос в течении недели</div>
               </div>
 
             {% else %}
@@ -64,10 +64,10 @@
                         </div>
 
                         <div class = "center low-margin">
-                          <a class="btn btn-primary center" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                          <a class="btn btn-primary center" role="button" data-toggle="collapse" href="#collapseresponse{{ response.id }}" aria-expanded="false" aria-controls="collapseresponse{{ response.id }}">
                             Есть что добавить?
                           </a>
-                          <div class="collapse" id="collapseExample">
+                          <div class="collapse" id="collapseresponse{{ response.id }}">
                             <div class="well">
                               {% include 'book/includes/commentform.html' %}
                             </div>
