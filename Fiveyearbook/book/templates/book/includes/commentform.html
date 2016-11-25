@@ -1,0 +1,9 @@
+<form action="{% url 'comment' response.id %}" method="post">
+  {% csrf_token %}
+    <div class="form-group">
+      <label for="inputResponse">Комментарий:</label>
+      <textarea class="form-control" rows="5" id="inputResponse" name="comment" placeholder="Введите комментарий:"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-default">Ok</button>
+</form>
