@@ -6,23 +6,28 @@
       <div class="thumbnail">
           {% load staticfiles %}
           <img src="{% static '/img/question.jpg' %}" class="responsive-img" alt="img">
+
           <div class="caption">
-          {% if current_day and not_answered %}
-            {% include 'book/includes/responseform.html' %}
-          {% elif not_answered %}
-            <div class="panel-body">
-                <h4>{{ question.title }}</h4>
-              </div>
-              <div class="panel-footer">Вы не ответили на вопрос в течении недели</div>
-            </div>
-          {% else %}
-            <div class="panel panel-default">
+
+            {% if current_day and not_answered %}
+              {% include 'book/includes/responseform.html' %}
+
+            {% elif not_answered %}
               <div class="panel-body">
-                <h4>{{ question.title }}</h4>
+                  <h4>{{ question.title }}</h4>
+                </div>
+                <div class="panel-footer">Вы не ответили на вопрос в течении недели</div>
               </div>
-              <div class="panel-footer">Вы уже ответили на этот вопрос</div>
-            </div>
-          {% endif %}
+
+            {% else %}
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <h4>{{ question.title }}</h4>
+                </div>
+                <div class="panel-footer">Вы уже ответили на этот вопрос</div>
+              </div>
+
+            {% endif %}
         </div>
       </div>
     </div>
@@ -31,6 +36,8 @@
     <div height = "490px" scroll ="auto"> 
       <div class="col-sm-6 col-md-6">
         <div class="thumbnail">
+
+          {% include 'book/includes/messagecatcher.html' %}
 
           <div class="list-group-item active">
             Вы ответили:

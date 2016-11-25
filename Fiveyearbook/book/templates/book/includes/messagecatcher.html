@@ -1,0 +1,16 @@
+{% if messages %}
+  {% for message in messages %}
+    {% if 'error' in message.tags %}
+      <div class="alert alert-danger">  <!-- singular -->
+        <a class="close" data-dismiss="alert">×</a>
+        {{ message|safe }}
+      </div>
+    {% endif %}
+    {% if 'warning' in message.tags %}
+      <div class="alert alert-warning">  <!-- singular -->
+        <a class="close" data-dismiss="alert">×</a>
+        {{ message|safe }}
+      </div>
+    {% endif %}
+  {% endfor %}
+{% endif %}

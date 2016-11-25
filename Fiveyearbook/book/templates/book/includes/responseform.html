@@ -1,6 +1,7 @@
 <form action="{% url 'response' question.id %}" method="post">
   {% csrf_token %}
     <div class="form-group">
+      {% include 'book/includes/messagecatcher.html' %}
       <label for="inputResponse">{{ question.title }}</label>
       <textarea class="form-control" rows="3" id="inputResponse" name="response" placeholder="Ответьте на вопрос..."></textarea>
     </div>

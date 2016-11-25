@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from django.contrib import messages
 
 
 # Create your views here.
@@ -28,7 +28,7 @@ class DetailView(generic.DetailView):
     current_date = timezone.now()
 
     timedelta = current_date - question.date
-    
+
     if timedelta.days >= 0 and timedelta.days <= 7:
       context ["current_day"] = True
     else:
@@ -66,9 +66,16 @@ class ListView(generic.ListView):
 
 def response(request, question_id):
   question = get_object_or_404(Question, pk=question_id)
-  response = question.response_set.create(text=request.POST['response'], date=timezone.now())
+  response_text = request.POST['response']
+  comment_text = request.POST['comment']
 
-  comment = response.comment_set.create(text=request.POST['comment'], date=timezone.now())
+  if response_text:
+    response = question.response_set.create(text=response_text, date=timezone.now())
+  else:
+    messages.error(request, "Вы должны ввести ответ на вопрос!")
+
+  if comment_text:
+    comment = response.comment_set.create(text=comment_text, date=timezone.now())
 
   # Always return an HttpResponseRedirect after successfully dealing
   # with POST data. This prevents data from being posted twice if a
@@ -78,7 +85,12 @@ def response(request, question_id):
 def comment(request, response_id):
 
   response = get_object_or_404(Response, pk=response_id)
-  comment = response.comment_set.create(text=request.POST['comment'], date=timezone.now())
+  text = request.POST['comment']
+
+  if text:
+    comment = response.comment_set.create(text=text, date=timezone.now())
+  else:
+    messages.warning(request, "Вы ничего не ввели, коммент не добавлен")
 
   # Always return an HttpResponseRedirect after successfully dealing
   # with POST data. This prevents data from being posted twice if a
