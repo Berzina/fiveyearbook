@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
-from .models import Response, Question
+from .models import Response, Question, QQuestion
 from django.utils import timezone
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -21,6 +21,14 @@ class DetailView(generic.DetailView):
     paginator = Paginator(response_list.order_by('-date'), 5)
     page = self.request.GET.get('page',1)
     responses = paginator.page(page)
+
+    # qquestion_list = question.qquestion_set.all()
+    # paginator = Paginator(qquestion_list, 1)
+    # page = self.request.GET.get('view',1)
+    # qquestions = paginator.page(page)
+    #
+    # page = self.request.GET.get('page',1)
+    # view = self.request.GET.get('view',1)
 
     # Are you able to answer the question?
     # 
@@ -43,6 +51,8 @@ class DetailView(generic.DetailView):
 
 
     context['paged_object'] =  responses
+    context['quick_questions'] = QQuestion.objects.all()
+
     return context
 
 

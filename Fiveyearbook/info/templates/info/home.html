@@ -1,6 +1,23 @@
 {% extends "info/header.html" %}
 {% block content %}
+
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static '/css/.slick.css' %}" type = "text/css"/>
+<link rel="stylesheet" href="{% static '/css/slick-theme.css' %}" type = "text/css"/>
+<script type="text/javascript" src="{% static 'js/slick.min.js' %}"></script>
+
 <p>Hey user! Welcome to your own blog that just care who are you, want to know about your mood and goals and dreams... Whatever!</p>
 <p>Um, that's a challenge. Are your last-year dream come true? Did you get out the trash that damage your life?</p>
 <p>Go ahead and know everything about yourself either in present or in the past!</p>
+
+<div class="slider single-item">
+    <div>1</div>
+    <div>2</div>
+    <div>3</div>
+    <div>4</div>
+    <div>5</div>
+    <div>6</div>
+</div>
+
+<script> $('.single-item').slick();</script>
 {% endblock %}
