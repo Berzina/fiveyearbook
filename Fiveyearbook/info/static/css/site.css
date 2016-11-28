@@ -12,7 +12,23 @@
 .no-top-margin {
   margin-top: 0px;
 }
+.no-left-margin {
+  margin-left: 0px;
+}
+.no-right-margin {
+  margin-right: 0px;
+}
 
+.no-padding-right {
+    padding-right: 0px;
+}
+.no-padding-left {
+    padding-left: 0px;
+}
+
+.low-padding-left {
+    padding-left: 2px;
+}
 #date-header {
   border: 1px solid gray;
   border-bottom-left-radius: 5px;

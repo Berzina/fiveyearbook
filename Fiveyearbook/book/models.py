@@ -3,6 +3,7 @@ from django.db import models
 class Question(models.Model):
   title = models.CharField(max_length=140)
   date = models.DateTimeField()
+  type = "main"
 
   def __str__(self):
     return self.title
@@ -26,6 +27,7 @@ class Comment(models.Model):
 class QQuestion(models.Model):
   title = models.CharField(max_length=140)
   date = models.DateTimeField()
+  type = "quick"
 
   def __str__(self):
     return self.title

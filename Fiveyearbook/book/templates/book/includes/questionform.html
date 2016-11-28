@@ -4,14 +4,20 @@
 
   <div class="caption">
 
-    {% if current_day and not_answered %}
-      {% include 'book/includes/responseform.html' %}
+    {% if date and not_answered %}
+
+      {% if question.type == 'quick' %}
+        {% include 'book/includes/quickresponseform.html' %}
+      {% else %}
+        {% include 'book/includes/responseform.html' %}
+      {% endif %}
 
     {% elif not_answered %}
-      <div class="panel-body">
-          <h4>{{ question.title }}</h4>
+      <div class="panel panel-default">
+        <div class="panel-body">
+            <h4>{{ question.title }}</h4>
         </div>
-        <div class="panel-footer">Вопрос закрыт, вы должны ответить на вопрос в течении недели</div>
+        <div class="panel-footer">Вопрос закрыт за истечением времени ответа.</div>
       </div>
 
     {% else %}
@@ -22,4 +28,6 @@
         <div class="panel-footer">Вы уже ответили на этот вопрос</div>
       </div>
     {% endif %}
+
+  </div>
 </div>

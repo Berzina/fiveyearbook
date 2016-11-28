@@ -38,16 +38,34 @@ class DetailView(generic.DetailView):
     timedelta = current_date - question.date
 
     if timedelta.days >= 0 and timedelta.days <= 7:
-      context ["current_day"] = True
+      context ["current_week"] = True
     else:
-      context ["current_day"] = False
+      context ["current_week"] = False
 
     # 2. Question should not have answers this year
     # 
     if not question.response_set.filter(date__year = timezone.now().year):        
-      context ["not_answered"] = True
+      context ["main_not_answered"] = True
     else:
-      context ["not_answered"] = False
+      context ["main_not_answered"] = False
+
+    # 3. Same as 2. for quick questions:
+    #
+    for qquestion in QQuestion.objects.all():
+      if not qquestion.qresponse_set.filter(date__year = timezone.now().year):
+        context [ str(qquestion.id) + "_not_answered" ] = True
+      else:
+        context [ str(qquestion.id) + "_not_answered" ] = False
+
+    # 4. Quick question should have date which is current
+    current_date = timezone.now()
+
+    timedelta = current_date - question.date
+
+    if timedelta.days == 0:
+      context ["current_day"] = True
+    else:
+      context ["current_day"] = False
 
 
     context['paged_object'] =  responses
@@ -101,6 +119,23 @@ def comment(request, response_id):
     comment = response.comment_set.create(text=text, date=timezone.now())
   else:
     messages.warning(request, "Вы ничего не ввели, коммент не добавлен")
+
+  # Always return an HttpResponseRedirect after successfully dealing
+  # with POST data. This prevents data from being posted twice if a
+  # user hits the Back button.
+  return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def vote(request, qquestion_id):
+
+  question = get_object_or_404(QQuestion, pk=qquestion_id)
+
+  try:
+    selected_choice = question.qresponse_set.get(pk=request.POST['choice'])
+  except:
+    messages.warning(request, "Вы не ответили на вопрос.")
+  else:
+    selected_choice.vote += 1
+    selected_choice.save()
 
   # Always return an HttpResponseRedirect after successfully dealing
   # with POST data. This prevents data from being posted twice if a

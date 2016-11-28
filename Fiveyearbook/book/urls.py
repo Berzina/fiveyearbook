@@ -9,4 +9,5 @@ urlpatterns = [
   # url(r'(?P<question_id>[0-9]+)/$', views.question)
       url(r'^(?P<pk>[0-9]+)/$', views.DetailView.as_view(), name='question'),
       url(r'^(?P<question_id>[0-9]+)/response/$', views.response, name='response'),
-      url(r'^(?P<response_id>[0-9]+)/comment/$', views.comment, name='comment')]
+      url(r'^(?P<response_id>[0-9]+)/comment/$', views.comment, name='comment'),
+      url(r'^(?P<qquestion_id>[0-9]+)/vote/$', views.vote, name='vote')]
