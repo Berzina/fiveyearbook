@@ -4,8 +4,8 @@
     <div class="form-group">
       {% include 'book/includes/messagecatcher.html' %}
       <label>{{ question.title }}</label>
-        {% for choice in question.qresponse_set.all %}
-            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+        {% for choice in [question.variant1, question.variant2, question.variant3] %}
+            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ forloop.counter }}" />
             <label for="choice{{ forloop.counter }}">{{ choice.text }}</label><br />
         {% endfor %}
     </div>

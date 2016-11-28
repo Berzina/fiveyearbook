@@ -27,14 +27,16 @@ class Comment(models.Model):
 class QQuestion(models.Model):
   title = models.CharField(max_length=140)
   date = models.DateTimeField()
+  variant1 = models.CharField(max_length=140)
+  variant2 = models.CharField(max_length=140)
+  variant3 = models.CharField(max_length=140)
   type = "quick"
 
   def __str__(self):
     return self.title
 
-class QResponse(models.Model):
+class QVote (models.Model):
   qquestion = models.ForeignKey(QQuestion, on_delete=models.CASCADE)
-  text = models.CharField(max_length=140)
   date = models.DateTimeField()
   vote = models.IntegerField()
 

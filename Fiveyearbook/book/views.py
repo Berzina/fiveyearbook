@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
-from .models import Response, Question, QQuestion
+from .models import Response, Question
 from django.utils import timezone
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -49,26 +49,16 @@ class DetailView(generic.DetailView):
     else:
       context ["main_not_answered"] = False
 
-    # 3. Same as 2. for quick questions:
+    # 3. Question should not have answers this day:
     #
     for qquestion in QQuestion.objects.all():
-      if not qquestion.qresponse_set.filter(date__year = timezone.now().year):
+      if not qquestion.qresponse_set.filter(date__month = timezone.now().year, date__day = timezone.now().day):
         context [ str(qquestion.id) + "_not_answered" ] = True
       else:
         context [ str(qquestion.id) + "_not_answered" ] = False
 
-    # 4. Quick question should have date which is current
-    current_date = timezone.now()
-
-    timedelta = current_date - question.date
-
-    if timedelta.days == 0:
-      context ["current_day"] = True
-    else:
-      context ["current_day"] = False
-
-
-    context['paged_object'] =  responses
+    context["current_day"] = True
+    context['paged_object'] = responses
     context['quick_questions'] = QQuestion.objects.all()
 
     return context
@@ -130,12 +120,11 @@ def vote(request, qquestion_id):
   question = get_object_or_404(QQuestion, pk=qquestion_id)
 
   try:
-    selected_choice = question.qresponse_set.get(pk=request.POST['choice'])
+    choice = request.POST['choice']
   except:
     messages.warning(request, "Вы не ответили на вопрос.")
   else:
-    selected_choice.vote += 1
-    selected_choice.save()
+    selected_choice = question.qvote_set.create(date=timezone.now(), vote=choice)
 
   # Always return an HttpResponseRedirect after successfully dealing
   # with POST data. This prevents data from being posted twice if a
