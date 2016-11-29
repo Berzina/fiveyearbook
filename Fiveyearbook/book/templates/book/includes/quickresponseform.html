@@ -1,13 +1,21 @@
-<form action="{% url 'vote' qquestion.id %}" method="post">
+<form action="{% url 'vote' question.id %}" method="post">
   {% csrf_token %}
 
     <div class="form-group">
       {% include 'book/includes/messagecatcher.html' %}
       <label>{{ question.title }}</label>
-        {% for choice in [question.variant1, question.variant2, question.variant3] %}
-            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ forloop.counter }}" />
-            <label for="choice{{ forloop.counter }}">{{ choice.text }}</label><br />
-        {% endfor %}
+
+        <br />
+
+        <input type="radio" name="choice" id="choice_1" value="1" />
+        <label for="choice_1">{{ question.variant1 }}</label><br />
+
+        <input type="radio" name="choice" id="choice_2" value="2" />
+        <label for="choice_2">{{ question.variant2 }}</label><br />
+
+        <input type="radio" name="choice" id="choice_3" value="3" />
+        <label for="choice_3">{{ question.variant3 }}</label><br />
+
     </div>
 
     <button type="submit" class="btn btn-default">Ok</button>

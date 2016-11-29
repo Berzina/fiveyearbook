@@ -41,4 +41,5 @@ class QVote (models.Model):
   vote = models.IntegerField()
 
   def __str__(self):
-    return self.text
+    return str(self.date)
+

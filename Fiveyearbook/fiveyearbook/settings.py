@@ -51,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'Fiveyearbook.urls'
+ROOT_URLCONF = 'fiveyearbook.urls'
 
 TEMPLATES = [
     {
@@ -69,7 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'Fiveyearbook.wsgi.application'
+WSGI_APPLICATION = 'fiveyearbook.wsgi.application'
 
 
 # Database

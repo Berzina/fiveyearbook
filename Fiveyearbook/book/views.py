@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
-from .models import Response, Question
+from .models import Response, Question, QQuestion, QVote
 from django.utils import timezone
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -51,15 +51,18 @@ class DetailView(generic.DetailView):
 
     # 3. Question should not have answers this day:
     #
-    for qquestion in QQuestion.objects.all():
-      if not qquestion.qresponse_set.filter(date__month = timezone.now().year, date__day = timezone.now().day):
-        context [ str(qquestion.id) + "_not_answered" ] = True
-      else:
-        context [ str(qquestion.id) + "_not_answered" ] = False
 
-    context["current_day"] = True
+    quick_not_answered_dict = {}
+    for qquestion in QQuestion.objects.all():
+      if not qquestion.qvote_set.filter(date__month = timezone.now().month, date__day = timezone.now().day):
+        quick_not_answered_dict [ qquestion ] = True
+      else:
+        quick_not_answered_dict [ qquestion ] = False
+
+
     context['paged_object'] = responses
     context['quick_questions'] = QQuestion.objects.all()
+    context['quick_not_answered'] = quick_not_answered_dict
 
     return context
 
