@@ -22,12 +22,12 @@
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="view-main">
-                        {% include 'book/includes/questionform.html' with not_answered=main_not_answered date=current_week %}
+                        {% include 'book/includes/questionform.html' with not_answered=main_not_answered %}
                     </div>
 
                     {% for key, value in quick_not_answered.items %}
                         {% if value %}
-                            <div class="tab-pane" id="view-{{qquestion.id}}">
+                            <div class="tab-pane" id="view-{{key.id}}">
                             {% include 'book/includes/questionform.html' with not_answered=value question=key %}
                             </div>
                         {% endif %}

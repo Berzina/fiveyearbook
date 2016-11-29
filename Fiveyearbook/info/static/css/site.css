@@ -25,6 +25,9 @@
 .no-padding-left {
     padding-left: 0px;
 }
+.no-padding {
+    padding: 0px;
+    }
 
 .low-padding-left {
     padding-left: 2px;

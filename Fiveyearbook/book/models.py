@@ -37,6 +37,7 @@ class QQuestion(models.Model):
 
 class QVote (models.Model):
   qquestion = models.ForeignKey(QQuestion, on_delete=models.CASCADE)
+  title = models.CharField(max_length=140)
   date = models.DateTimeField()
   vote = models.IntegerField()
 

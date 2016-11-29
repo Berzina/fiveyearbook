@@ -22,14 +22,6 @@ class DetailView(generic.DetailView):
     page = self.request.GET.get('page',1)
     responses = paginator.page(page)
 
-    # qquestion_list = question.qquestion_set.all()
-    # paginator = Paginator(qquestion_list, 1)
-    # page = self.request.GET.get('view',1)
-    # qquestions = paginator.page(page)
-    #
-    # page = self.request.GET.get('page',1)
-    # view = self.request.GET.get('view',1)
-
     # Are you able to answer the question?
     # 
     # 1. Question should have date which is current or + 7days
@@ -59,10 +51,16 @@ class DetailView(generic.DetailView):
       else:
         quick_not_answered_dict [ qquestion ] = False
 
+    quick_answers_dict ={}
+
+    for qquestion in QQuestion.objects.all():
+      for qvote in qquestion.qvote_set.filter(date__month=timezone.now().month, date__day=timezone.now().day):
+        quick_answers_dict[qquestion] = qvote
 
     context['paged_object'] = responses
     context['quick_questions'] = QQuestion.objects.all()
     context['quick_not_answered'] = quick_not_answered_dict
+    context['quick_answers'] = quick_answers_dict
 
     return context
 
@@ -121,13 +119,21 @@ def comment(request, response_id):
 def vote(request, qquestion_id):
 
   question = get_object_or_404(QQuestion, pk=qquestion_id)
+  variant_title =question.variant1
+
 
   try:
     choice = request.POST['choice']
+    if int(choice) == 3:
+      variant_title = question.variant1
+    elif int(choice) == 2:
+      variant_title = question.variant2
+    elif int(choice) == 1:
+      variant_title = question.variant3
+
+    selected_choice = question.qvote_set.create(date=timezone.now(), vote=choice, title=variant_title)
   except:
     messages.warning(request, "Вы не ответили на вопрос.")
-  else:
-    selected_choice = question.qvote_set.create(date=timezone.now(), vote=choice)
 
   # Always return an HttpResponseRedirect after successfully dealing
   # with POST data. This prevents data from being posted twice if a
