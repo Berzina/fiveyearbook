@@ -20,7 +20,15 @@
                       <div class="panel-body">
 
                       {% for qquestion, qvote in quick_answers.items %}
-                        {{qquestion.title}} : {{qvote.vote}} : {{ qvote.title }}
+                        {{ qquestion.respond_as }} :
+                        {% if qvote.vote == 3 %}
+                          <span class="label label-success">{{ qvote.title }}</span>
+                        {% elif qvote.vote == 2 %}
+                          <span class="label label-warning">{{ qvote.title }}</span>
+                        {% elif qvote.vote == 1 %}
+                          <span class="label label-danger">{{ qvote.title }}</span>
+                        {% endif %}
+                        <br>
                       {% endfor %}
                       </div>
                     </div>

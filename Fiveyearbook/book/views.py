@@ -56,6 +56,7 @@ class DetailView(generic.DetailView):
     for qquestion in QQuestion.objects.all():
       for qvote in qquestion.qvote_set.filter(date__month=timezone.now().month, date__day=timezone.now().day):
         quick_answers_dict[qquestion] = qvote
+        print (type(qvote.vote))
 
     context['paged_object'] = responses
     context['quick_questions'] = QQuestion.objects.all()

@@ -30,6 +30,8 @@ class QQuestion(models.Model):
   variant1 = models.CharField(max_length=140)
   variant2 = models.CharField(max_length=140)
   variant3 = models.CharField(max_length=140)
+
+  respond_as = models.CharField(max_length=140)
   type = "quick"
 
   def __str__(self):
