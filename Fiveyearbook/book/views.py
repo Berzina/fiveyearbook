@@ -18,7 +18,7 @@ class DetailView(generic.DetailView):
     context = super(DetailView, self).get_context_data(**kwargs)
 
     response_list = question.response_set.all()
-    paginator = Paginator(response_list.order_by('-date'), 5)
+    paginator = Paginator(response_list.order_by('-date'), 2)
     page = self.request.GET.get('page',1)
     responses = paginator.page(page)
 

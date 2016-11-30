@@ -70,7 +70,9 @@ margin-left: -2px;}
 }
 
 .thumbnail-new {
-    box-shadow : 1px 1px 1px 1px #FF6666;
+    box-shadow : 3px 3px 3px 3px #4c814c;
+    border-color: #004c00;
+
 }
 
 .max-height {
