@@ -32,6 +32,13 @@
 .low-padding-left {
     padding-left: 2px;
 }
+
+.minus-padding-left {
+padding-left: -2px;}
+
+.minus-margin-left {
+margin-left: -2px;}
+
 #date-header {
   border: 1px solid gray;
   border-bottom-left-radius: 5px;
@@ -64,5 +71,14 @@
 
 .thumbnail-new {
     box-shadow : 1px 1px 1px 1px #FF6666;
+}
+
+.max-height {
+    height : 100%;
+    }
+
+.no-left-radius-borders {
+    border-left-top-radius: 0px;
+    border-left-bottom-radius: 0px;
 }
 

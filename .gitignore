@@ -1,1 +1,16 @@
 .idea/
+book/__pycache__/
+info/static/css/bootstrap-flex.css
+info/static/css/bootstrap-flex.css.map
+info/static/css/bootstrap-flex.min.css
+info/static/css/bootstrap-flex.min.css.map
+info/static/css/bootstrap-grid.css
+info/static/css/bootstrap-grid.css.map
+info/static/css/bootstrap-grid.min.css
+info/static/css/bootstrap-grid.min.css.map
+info/static/css/bootstrap-reboot.css
+info/static/css/bootstrap-reboot.css.map
+info/static/css/bootstrap-reboot.min.css
+info/static/css/bootstrap-reboot.min.css.map
+overview/
+__pycache__/

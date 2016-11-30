@@ -1,7 +1,7 @@
 {% extends "info/header.html"%}
 
 {% block content %}
-  <div class= "row">
+  <div class= "row flex-items-xs-middle">
   {% for question in paged_object %}
 
     <div class="col-sm-6 col-md-4">
@@ -29,7 +29,7 @@
               </div>
 
               <div class="col-sm-7 col-md-7">
-                <h3 class = "low-margin">{{ question.title }}</h3>
+                <h5 class = "low-margin">{{ question.title }}</h5>
               </div>
               <p></p>
             </div>
@@ -39,7 +39,6 @@
     </div>
   {% endfor %}
   </div>
-  <div class = "row">
-    {% include 'book/includes/listpagination.html' with paged_object=paged_object%}  
-  </div>
+
+    {% include 'book/includes/listpagination.html' with paged_object=paged_object%}
 {% endblock %}
