@@ -36,14 +36,18 @@
                 </div><!-- /tab-content -->
             </div><!-- /tabbable -->
         </div><!-- /col -->
-        <div class="col-sm-1 col-md-1 low-padding-left" id = "next-button">
-            <a class="btn btn-primary btnNext"><span class="glyphicon glyphicon-chevron-right"></a>
-        </div>
+        {% for key, value in quick_not_answered.items %}
+            {% if value %}
+                <div class="col-sm-1 col-md-1 low-padding-left" id = "next-button">
+                    <a class="btn btn-primary btnNext"><span class="glyphicon glyphicon-chevron-right"></a>
+                </div>
+            {% endif %}
+        {% endfor %}
+
     </div>
 
 
 {% include 'book/includes/responselist.html' %}
-
 
 </div>
 

@@ -5,7 +5,11 @@
   {% for question in paged_object %}
 
     <div class="col-sm-6 col-md-4">
-      <div class="thumbnail">
+      {% if question.id in not_answered_question_ids %}
+        <div class="thumbnail thumbnail-new">
+      {% else %}
+        <div class="thumbnail">
+      {% endif %}
         <a href="/book/{{question.id}}/?page=1" class="thumbnail">
         {% load staticfiles %}
         <img src="{% static '/img/question.jpg' %}" class="responsive-img" alt="img">

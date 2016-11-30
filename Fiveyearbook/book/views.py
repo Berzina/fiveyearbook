@@ -41,6 +41,7 @@ class DetailView(generic.DetailView):
     else:
       context ["main_not_answered"] = False
 
+
     # 3. Question should not have answers this day:
     #
 
@@ -54,18 +55,20 @@ class DetailView(generic.DetailView):
     quick_answers_dict ={}
 
     for qquestion in QQuestion.objects.all():
-      for qvote in qquestion.qvote_set.filter(date__month=timezone.now().month, date__day=timezone.now().day):
+      for qvote in qquestion.qvote_set.all():
         quick_answers_dict[qquestion] = qvote
-        print (type(qvote.vote))
 
     context['paged_object'] = responses
     context['quick_questions'] = QQuestion.objects.all()
     context['quick_not_answered'] = quick_not_answered_dict
     context['quick_answers'] = quick_answers_dict
 
+    # Counter for badge with amount of not answered questions
+    num_not_answered = count_not_answered()
+
+    context['num_of_not_answered'] = num_not_answered
+
     return context
-
-
 
 
 class ListView(generic.ListView):
@@ -80,7 +83,12 @@ class ListView(generic.ListView):
     page = self.request.GET.get('page',1)
     questions = paginator.page(page)
 
+    not_answered_ids = define_not_answered()
+
     context['paged_object'] =  questions
+    context['num_of_not_answered'] = count_not_answered()
+    context['not_answered_question_ids'] = not_answered_ids ['question_ids']
+
     return context 
 
 
@@ -140,3 +148,41 @@ def vote(request, qquestion_id):
   # with POST data. This prevents data from being posted twice if a
   # user hits the Back button.
   return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+def count_not_answered ():
+  num_not_answered = 0
+
+  # Main questions
+  for question in Question.objects.all():
+    timedelta = timezone.now() - question.date
+    if timedelta.days >= 0 and timedelta.days <= 7 and not question.response_set.filter(date__year = timezone.now().year):
+      num_not_answered += 1
+
+  # Quick questions
+  for qquestion in QQuestion.objects.all():
+    if not qquestion.qvote_set.filter(date__month=timezone.now().month, date__day=timezone.now().day):
+      num_not_answered += 1
+
+  return num_not_answered
+
+def define_not_answered ():
+
+  not_answered = {}
+  not_answered_question_ids = []
+  not_answered_qquestion_ids = []
+
+  # Main questions
+  for question in Question.objects.all():
+    timedelta = timezone.now() - question.date
+    if timedelta.days >= 0 and timedelta.days <= 7 and not question.response_set.filter(date__year=timezone.now().year):
+      not_answered_question_ids.append(question.id)
+
+  # Quick questions
+  for qquestion in QQuestion.objects.all():
+    if not qquestion.qvote_set.filter(date__month=timezone.now().month, date__day=timezone.now().day):
+      not_answered_qquestion_ids.append(qquestion.id)
+
+  not_answered['question_ids'] = not_answered_question_ids
+  not_answered['qquestion_ids'] = not_answered_qquestion_ids
+
+  return not_answered

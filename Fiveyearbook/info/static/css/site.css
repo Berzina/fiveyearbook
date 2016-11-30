@@ -61,3 +61,8 @@
   max-height: 200px;
   overflow :auto;
 }
+
+.thumbnail-new {
+    box-shadow : 1px 1px 1px 1px #FF6666;
+}
+

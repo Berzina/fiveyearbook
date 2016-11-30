@@ -20,15 +20,17 @@
                       <div class="panel-body">
 
                       {% for qquestion, qvote in quick_answers.items %}
-                        {{ qquestion.respond_as }} :
-                        {% if qvote.vote == 3 %}
-                          <span class="label label-success">{{ qvote.title }}</span>
-                        {% elif qvote.vote == 2 %}
-                          <span class="label label-warning">{{ qvote.title }}</span>
-                        {% elif qvote.vote == 1 %}
-                          <span class="label label-danger">{{ qvote.title }}</span>
+                        {% if qvote.date|date:"d M Y" == response.date|date:"d M Y" %}
+                          <p>{{ qquestion.respond_as }} :
+                          {% if qvote.vote == 3 %}
+                            <span class="label label-success">{{ qvote.title }}</span>
+                          {% elif qvote.vote == 2 %}
+                            <span class="label label-warning">{{ qvote.title }}</span>
+                          {% elif qvote.vote == 1 %}
+                            <span class="label label-danger">{{ qvote.title }}</span>
+                          {% endif %}
+                          </p>
                         {% endif %}
-                        <br>
                       {% endfor %}
                       </div>
                     </div>
