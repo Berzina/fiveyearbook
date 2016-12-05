@@ -1,3 +1,5 @@
 db.*
 migrations/*
 !migrations/__init__.py
+fiveyearbook/__pycache__/*
+
