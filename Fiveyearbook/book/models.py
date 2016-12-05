@@ -9,6 +9,7 @@ class Question(models.Model):
     return self.title
 
 class Response(models.Model):
+  author = models.ForeignKey('auth.User')
   question = models.ForeignKey(Question, on_delete=models.CASCADE)
   text = models.CharField(max_length=140)
   date = models.DateTimeField()
@@ -17,6 +18,7 @@ class Response(models.Model):
     return self.text
 
 class Comment(models.Model):
+  author = models.ForeignKey('auth.User')
   question = models.ForeignKey(Response, on_delete=models.CASCADE)
   text = models.CharField(max_length=140)
   date = models.DateTimeField()
@@ -38,6 +40,7 @@ class QQuestion(models.Model):
     return self.title
 
 class QVote (models.Model):
+  author = models.ForeignKey('auth.User')
   qquestion = models.ForeignKey(QQuestion, on_delete=models.CASCADE)
   title = models.CharField(max_length=140)
   date = models.DateTimeField()
