@@ -1,67 +1,68 @@
-<div class="thumbnail">
 
-  <div class="list-group-item active">
-    Вы ответили:
-  </div>
+  <div class="thumbnail">
 
-  <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-    {% for response in question.response_set.all %}
-      <div class="panel panel-default no-padding">
-        <div class="panel-heading" role="tab" id="headingOne">
-          <h4 class="panel-title">
-            <a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="false" aria-controls="{{ response.id }}" href="#{{ response.id }}" class="list-group-item no-padding">
-              <div class="panel panel-default no-padding">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><span class="label label-success">{{ response.date.year }}</span> {{ response.text }}</h3>
-                </div>
-              <div class="panel-body">
+    <div class="list-group-item active">
+      Вы ответили:
+    </div>
 
-              {% for qquestion, qvote in quick_answers.items %}
-                {% if qvote.date|date:"d M Y" == response.date|date:"d M Y" %}
-                  <p>{{ qquestion.respond_as }} :
-                  {% if qvote.vote == 3 %}
-                    <span class="label label-success">{{ qvote.title }}</span>
-                  {% elif qvote.vote == 2 %}
-                    <span class="label label-warning">{{ qvote.title }}</span>
-                  {% elif qvote.vote == 1 %}
-                    <span class="label label-danger">{{ qvote.title }}</span>
-                  {% endif %}
-                  </p>
-                {% endif %}
-              {% endfor %}
-              </div>
-            </div>
-            </a>
-          </h4>
-        </div>
-        <div id="{{ response.id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-          <div class="panel-body">
-            <div class="panel panel-default">
-              <div class="panel-heading">Комментарии:</div>
-                <div class = "limit-height-200">
-                  {% for comment in response.comment_set.all %}
-                    <div class="panel-body"><span class="label label-success">
-                    {{ comment.date.day }}.{{ comment.date.month }}.{{ comment.date.year }}</span> {{ comment.text }}</div>
-                  {% endfor %}
-                </div>
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      {% for response in question.response_set.all %}
+        {% if response.author == user %}
+            <div class="panel panel-default no-padding">
+              <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                  <a role="button" data-toggle="collapse" data-parent="#accordion" aria-expanded="false" aria-controls="{{ response.id }}" href="#{{ response.id }}" class="list-group-item no-padding">
+                    <div class="panel panel-default no-padding">
+                      <div class="panel-heading">
+                        <h3 class="panel-title"><span class="label label-success">{{ response.date.year }}</span> {{ response.text }}</h3>
+                      </div>
+                    <div class="panel-body">
 
-                <div class = "center low-margin">
-                  <a class="btn btn-primary center" role="button" data-toggle="collapse" href="#collapseresponse{{ response.id }}" aria-expanded="false" aria-controls="collapseresponse{{ response.id }}">
-                    Есть что добавить?
-                  </a>
-                  <div class="collapse" id="collapseresponse{{ response.id }}">
-                    <div class="well">
-                      {% include 'book/includes/commentform.html' %}
+                    {% for qquestion, qvote in quick_answers.items %}
+                      {% if qvote.date|date:"d M Y" == response.date|date:"d M Y" %}
+                        <p>{{ qquestion.respond_as }} :
+                        {% if qvote.vote == 3 %}
+                          <span class="label label-success">{{ qvote.title }}</span>
+                        {% elif qvote.vote == 2 %}
+                          <span class="label label-warning">{{ qvote.title }}</span>
+                        {% elif qvote.vote == 1 %}
+                          <span class="label label-danger">{{ qvote.title }}</span>
+                        {% endif %}
+                        </p>
+                      {% endif %}
+                    {% endfor %}
                     </div>
                   </div>
+                  </a>
+                </h4>
+              </div>
+              <div id="{{ response.id }}" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">Комментарии:</div>
+                      <div class = "limit-height-200">
+                        {% for comment in response.comment_set.all %}
+                          <div class="panel-body"><span class="label label-success">
+                          {{ comment.date.day }}.{{ comment.date.month }}.{{ comment.date.year }}</span> {{ comment.text }}</div>
+                        {% endfor %}
+                      </div>
+
+                      <div class = "center low-margin">
+                        <a class="btn btn-primary center" role="button" data-toggle="collapse" href="#collapseresponse{{ response.id }}" aria-expanded="false" aria-controls="collapseresponse{{ response.id }}">
+                          Есть что добавить?
+                        </a>
+                        <div class="collapse" id="collapseresponse{{ response.id }}">
+                          <div class="well">
+                            {% include 'book/includes/commentform.html' %}
+                          </div>
+                        </div>
+                      </div>
+                  </div>
                 </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-    {% endfor %}
+        {% endif %}
+      {% endfor %}
 
+    </div>
   </div>
-</div>
-
-</div>

@@ -27,11 +27,17 @@ class ListView(generic.ListView):
       for qvote in qquestion.qvote_set.filter(author=self.request.user):
         quick_answers_dict[qquestion] = qvote
 
+    responses_exist = {}
+
+    for question in questions:
+      for response in question.response_set.filter(author=self.request.user):
+        responses_exist [question] = True
+
 
     context['quick_answers'] = quick_answers_dict
-
     context['paged_object'] = questions
     context['num_of_not_answered'] = count_not_answered(self.request)
+    context['responses_exist'] = responses_exist
 
     print (quick_answers_dict)
 

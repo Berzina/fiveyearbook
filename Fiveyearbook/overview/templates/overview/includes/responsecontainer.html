@@ -1,0 +1,15 @@
+{% for question, bool in responses_exist.items %}
+
+{% if bool %}
+  <div class="thumbnail">
+
+    <div class="list-group-item active">
+      Вы ответили:
+    </div>
+
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+    </div>
+  </div>
+{% endif %}
+{% endfor %}

@@ -6,11 +6,11 @@
         Вce вопросы:
       </div>
 
-      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+      <div class="panel-group">
         {% for question in paged_object %}
           <h4 class="panel-title">
-            <a role="button" class="toggle-button" id="{{ question.id }}" data-toggle="collapse" href="#question_{{ question.id }}">
-              <div class="panel panel-default no-padding">
+            <a role="button" data-toggle="collapse" data-parent="#accordion2" aria-expanded="false" aria-controls="#question_{{ question.id }}" href="#question_{{ question.id }}" class="list-group-item no-padding">
+              <div class="panel panel-default no-padding" id ="panel_{{ question.id}}">
                 <div class="panel-heading">
                     <h6 class="panel-title"><span class="label label-success">{{ question.date|date:"d M" }}</span> {{ question.title }}</h6>
                 </div>
@@ -33,13 +33,33 @@
     </div>
   </div>
 
+  <div class ="accordion-group col-sm-6 col-md-6" id ="accordion2">
 
-{% for question in paged_object %}
-  <div id = "question_{{ question.id }}" class="col-sm-6 col-md-6">
-    {% include 'book/includes/responselist.html' %}
+    {% for question, bool in responses_exist.items %}
+      {% if bool %}
+        {% for question in paged_object %}
+
+            <div id = "question_{{ question.id }}"  class="collapse">
+              {% include 'overview/includes/responselist.html' %}
+            </div>
+
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
   </div>
-{% endfor %}
 </div>
 
+<script>
+  var $accordion = $('#accordion2');
+    $accordion.on('show.bs.collapse','.collapse', function() {
+      $accordion.find('.collapse.in').collapse('hide');
+      var question_id = $(this).attr("id");
+      var id = question_id.split("_")[1];
+      $(".panel").removeClass("panel-success");
+      $("#panel_"+id).addClass ("panel-success");
+    });
+
+
+</script>
 
   
