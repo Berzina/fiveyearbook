@@ -7,7 +7,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login as login_django, logout as logout_django
+from book.views import count_not_answered
 
 def register (request):
 
@@ -31,6 +32,7 @@ def login (request):
   username = request.POST.get("username_login", False)
   password = request.POST.get("password_login", False)
   user = authenticate(username=username, password=password)
+  login_django(request, user)
 
 
   # Always return an HttpResponseRedirect after successfully dealing
@@ -40,4 +42,22 @@ def login (request):
 
 def index(request):
 
-  return render(request, 'info/home.html')
+  if request.user.is_authenticated:
+    context = {'user_logged': 'true',
+               'username' : request.user.username,
+               'num_of_not_answered': count_not_answered(request)}
+  else:
+    context = {'user_logged': 'false',
+               'username' : request.user.username,
+               'num_of_not_answered': count_not_answered(request)}
+
+  return render(request, 'info/home.html', context)
+
+def logout (request):
+
+  logout_django(request)
+
+  # Always return an HttpResponseRedirect after successfully dealing
+  # with POST data. This prevents data from being posted twice if a
+  # user hits the Back button.
+  return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

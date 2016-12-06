@@ -17,7 +17,7 @@ class DetailView(generic.DetailView):
     question = self.get_object()
     context = super(DetailView, self).get_context_data(**kwargs)
 
-    response_list = question.response_set.all()
+    response_list = question.response_set.filter(author=self.request.user.id)
     paginator = Paginator(response_list.order_by('-date'), 2)
     page = self.request.GET.get('page',1)
     responses = paginator.page(page)
@@ -36,7 +36,7 @@ class DetailView(generic.DetailView):
 
     # 2. Question should not have answers this year
     # 
-    if not question.response_set.filter(date__year = timezone.now().year):        
+    if not question.response_set.filter(date__year = timezone.now().year, author=self.request.user.id):
       context ["main_not_answered"] = True
     else:
       context ["main_not_answered"] = False
@@ -47,7 +47,7 @@ class DetailView(generic.DetailView):
 
     quick_not_answered_dict = {}
     for qquestion in QQuestion.objects.all():
-      if not qquestion.qvote_set.filter(date__month = timezone.now().month, date__day = timezone.now().day):
+      if not qquestion.qvote_set.filter(date__month = timezone.now().month, date__day = timezone.now().day, author=self.request.user.id):
         quick_not_answered_dict [ qquestion ] = True
       else:
         quick_not_answered_dict [ qquestion ] = False
@@ -55,7 +55,7 @@ class DetailView(generic.DetailView):
     quick_answers_dict ={}
 
     for qquestion in QQuestion.objects.all():
-      for qvote in qquestion.qvote_set.all():
+      for qvote in qquestion.qvote_set.filter(author=self.request.user):
         quick_answers_dict[qquestion] = qvote
 
     context['paged_object'] = responses
@@ -64,7 +64,7 @@ class DetailView(generic.DetailView):
     context['quick_answers'] = quick_answers_dict
 
     # Counter for badge with amount of not answered questions
-    num_not_answered = count_not_answered()
+    num_not_answered = count_not_answered(self.request)
 
     context['num_of_not_answered'] = num_not_answered
 
@@ -83,10 +83,10 @@ class ListView(generic.ListView):
     page = self.request.GET.get('page',1)
     questions = paginator.page(page)
 
-    not_answered_ids = define_not_answered()
+    not_answered_ids = define_not_answered(self.request)
 
     context['paged_object'] =  questions
-    context['num_of_not_answered'] = count_not_answered()
+    context['num_of_not_answered'] = count_not_answered(self.request)
     context['not_answered_question_ids'] = not_answered_ids ['question_ids']
 
     return context 
@@ -98,12 +98,12 @@ def response(request, question_id):
   comment_text = request.POST['comment']
 
   if response_text:
-    response = question.response_set.create(text=response_text, date=timezone.now())
+    response = question.response_set.create(text=response_text, date=timezone.now(), author=request.user)
   else:
     messages.error(request, "Вы должны ввести ответ на вопрос!")
 
   if comment_text:
-    comment = response.comment_set.create(text=comment_text, date=timezone.now())
+    comment = response.comment_set.create(text=comment_text, date=timezone.now(), author=request.user)
 
   # Always return an HttpResponseRedirect after successfully dealing
   # with POST data. This prevents data from being posted twice if a
@@ -116,7 +116,7 @@ def comment(request, response_id):
   text = request.POST['comment']
 
   if text:
-    comment = response.comment_set.create(text=text, date=timezone.now())
+    comment = response.comment_set.create(text=text, date=timezone.now(), author=request.user)
   else:
     messages.warning(request, "Вы ничего не ввели, коммент не добавлен")
 
@@ -140,7 +140,7 @@ def vote(request, qquestion_id):
     elif int(choice) == 1:
       variant_title = question.variant3
 
-    selected_choice = question.qvote_set.create(date=timezone.now(), vote=choice, title=variant_title)
+    selected_choice = question.qvote_set.create(date=timezone.now(), vote=choice, title=variant_title, author=request.user)
   except:
     messages.warning(request, "Вы не ответили на вопрос.")
 
@@ -149,23 +149,23 @@ def vote(request, qquestion_id):
   # user hits the Back button.
   return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-def count_not_answered ():
+def count_not_answered (request):
   num_not_answered = 0
 
   # Main questions
   for question in Question.objects.all():
     timedelta = timezone.now() - question.date
-    if timedelta.days >= 0 and timedelta.days <= 7 and not question.response_set.filter(date__year = timezone.now().year):
+    if timedelta.days >= 0 and timedelta.days <= 7 and not question.response_set.filter(date__year = timezone.now().year, author=request.user.id):
       num_not_answered += 1
 
   # Quick questions
   for qquestion in QQuestion.objects.all():
-    if not qquestion.qvote_set.filter(date__month=timezone.now().month, date__day=timezone.now().day):
+    if not qquestion.qvote_set.filter(date__month=timezone.now().month, date__day=timezone.now().day, author=request.user.id):
       num_not_answered += 1
 
   return num_not_answered
 
-def define_not_answered ():
+def define_not_answered (request):
 
   not_answered = {}
   not_answered_question_ids = []
@@ -174,12 +174,12 @@ def define_not_answered ():
   # Main questions
   for question in Question.objects.all():
     timedelta = timezone.now() - question.date
-    if timedelta.days >= 0 and timedelta.days <= 7 and not question.response_set.filter(date__year=timezone.now().year):
+    if timedelta.days >= 0 and timedelta.days <= 7 and not question.response_set.filter(date__year=timezone.now().year, author=request.user.id):
       not_answered_question_ids.append(question.id)
 
   # Quick questions
   for qquestion in QQuestion.objects.all():
-    if not qquestion.qvote_set.filter(date__month=timezone.now().month, date__day=timezone.now().day):
+    if not qquestion.qvote_set.filter(date__month=timezone.now().month, date__day=timezone.now().day, author=request.user.id):
       not_answered_qquestion_ids.append(qquestion.id)
 
   not_answered['question_ids'] = not_answered_question_ids

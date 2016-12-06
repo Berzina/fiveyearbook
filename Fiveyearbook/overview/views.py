@@ -21,10 +21,24 @@ class ListView(generic.ListView):
     page = self.request.GET.get('page',1)
     questions = paginator.page(page)
 
+    quick_answers_dict = {}
+
+    for qquestion in QQuestion.objects.all():
+      for qvote in qquestion.qvote_set.filter(author=self.request.user):
+        quick_answers_dict[qquestion] = qvote
+
+
+    context['quick_answers'] = quick_answers_dict
+
     context['paged_object'] = questions
-    context['num_of_not_answered'] = count_not_answered()
+    context['num_of_not_answered'] = count_not_answered(self.request)
+
+    print (quick_answers_dict)
 
     return context
 
 def diagrams(request):
   return render(request, 'overview/diagrams.html')
+
+
+

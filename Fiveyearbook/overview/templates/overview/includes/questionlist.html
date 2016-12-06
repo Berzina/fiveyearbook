@@ -8,28 +8,24 @@
 
       <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
         {% for question in paged_object %}
-          <div class="panel panel-default no-padding">
-            <div class="panel-heading" role="tab" id="headingOne">
-              <h4 class="panel-title">
-                <a role="button" class="toggle-button" id="{{ question.id }}" data-toggle="collapse" href="#question_{{ question.id }}">
-                  <div class="panel panel-default no-padding">
-                    <div class="panel-heading">
-                        <h6 class="panel-title"><span class="label label-success">{{ question.date|date:"d M" }}</span> {{ question.title }}</h6>
-                    </div>
-                    <div class="panel-body">
-                      {% with question.response_set.all|dictsort:"date"|last as last_answer %}
-                      {% if last_answer %}
-                        <span class="label label-success">{{ last_answer.date|date:"Y" }}</span> {{ last_answer.text }}
-                      {% else %}
-                        Пока ответов нет :(
-                      {% endif %}
-                      {% endwith %}
-                    </div>
-                  </div>
-                </a>
-              </h4>
-            </div>
-          </div>
+          <h4 class="panel-title">
+            <a role="button" class="toggle-button" id="{{ question.id }}" data-toggle="collapse" href="#question_{{ question.id }}">
+              <div class="panel panel-default no-padding">
+                <div class="panel-heading">
+                    <h6 class="panel-title"><span class="label label-success">{{ question.date|date:"d M" }}</span> {{ question.title }}</h6>
+                </div>
+                <div class="panel-body">
+                  {% with question.response_set.all|dictsort:"date"|last as last_answer %}
+                  {% if last_answer.author == user %}
+                    <span class="label label-success">{{ last_answer.date|date:"Y" }}</span> {{ last_answer.text }}
+                  {% else %}
+                    Пока ответов нет :(
+                  {% endif %}
+                  {% endwith %}
+                </div>
+              </div>
+            </a>
+          </h4>
         {% endfor %}
 
       </div>

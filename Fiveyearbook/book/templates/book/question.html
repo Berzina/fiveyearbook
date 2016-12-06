@@ -37,21 +37,22 @@
                 </div><!-- /tab-content -->
             </div><!-- /tabbable -->
         </div><!-- /col -->
-
+        <div class="col-sm-1 col-md-1 no-padding-left no-left-radius-borders hide" id = "next-button">
+            <a class="btn btn-secondary btnNext"><span class="glyphicon glyphicon-chevron-right"></a>
+        </div>
     {% for key, value in quick_not_answered.items %}
         {% if value %}
-            <div class="col-sm-1 col-md-1 no-padding-left no-left-radius-borders" id = "next-button">
-                <a class="btn btn-secondary btnNext"><span class="glyphicon glyphicon-chevron-right"></a>
-            </div>
+        <script> $("#next-button").removeClass("hide");</script>
         {% endif %}
-
     {% endfor %}
         </div>
 
 </div>
 
 <div class="col-sm-6 col-md-6">
-    {% include 'book/includes/responselist.html' %}
+    {% if paged_object %}
+        {% include 'book/includes/responselist.html' %}
+    {% endif %}
 </div>
 
 
